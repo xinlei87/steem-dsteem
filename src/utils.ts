@@ -37,8 +37,8 @@ import {EventEmitter} from 'events'
 import {PassThrough} from 'stream'
 import {VError} from 'verror'
 
-const fetch = global['fetch'] // tslint:disable-line:no-string-literal
-
+// var fetch = global['fetch'] // tslint:disable-line:no-string-literal
+var fetch = require('node-fetch')
 /**
  * Return a promise that will resove when a specific event is emitted.
  */
@@ -98,6 +98,7 @@ export async function retryingFetch(url: string, opts: any, timeout: number,
             if (fetchTimeout) {
                 opts.timeout = fetchTimeout(tries)
             }
+            console.log(fetch)
             const response = await fetch(url, opts)
             if (!response.ok) {
                 throw new Error(`HTTP ${ response.status }: ${ response.statusText }`)

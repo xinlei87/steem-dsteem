@@ -1,4 +1,25 @@
 
+Dsteem代码修改后进行编译生成dsteem.js文件，该文件可引入HTML中，直接使用
+
+`npm install`安装相应依赖包
+`npm install terser --save` 安装新的支持es6的编译时使用的包
+将makefile中的`uglifyjs`替换为`terser`
+将
+```
+dist/dsteem.d.ts: $(SRC_FILES) node_modules
+	dts-generator --name dsteem --project . --out dist/dsteem.d.ts
+	sed -e "s@'dsteem/index'@'dsteem'@g" -i '' dist/dsteem.d.ts
+```
+替换为
+```
+dist/dsteem.d.ts: $(SRC_FILES) node_modules
+	dts-generator --name dsteem --project . --out dist/dsteem.d.ts
+	sed -i "s/'dsteem\/index'/'dsteem'/g" dist/dsteem.d.ts
+```
+运行`npm run prepublishOnly`即可
+
+
+
 # [dsteem](https://github.com/jnordberg/dsteem) [![Build Status](https://img.shields.io/circleci/project/github/jnordberg/dsteem.svg?style=flat-square)](https://circleci.com/gh/jnordberg/workflows/dsteem) [![Coverage Status](https://img.shields.io/coveralls/jnordberg/dsteem.svg?style=flat-square)](https://coveralls.io/github/jnordberg/dsteem?branch=master) [![Package Version](https://img.shields.io/npm/v/dsteem.svg?style=flat-square)](https://www.npmjs.com/package/dsteem)
 
 Robust [steem blockchain](https://steem.io) client library that runs in both node.js and the browser.

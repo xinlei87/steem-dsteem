@@ -23,7 +23,7 @@ dist/%.js: lib
 		--standalone dsteem --plugin tsify \
 		--transform [ babelify --extensions .ts ] \
 		| derequire > $@
-	uglifyjs $@ \
+	terser $@ \
 		--source-map "content=inline,url=$(notdir $@).map,filename=$@.map" \
 		--compress "dead_code,collapse_vars,reduce_vars,keep_infinity,drop_console,passes=2" \
 		--output $@ || rm $@
@@ -32,7 +32,7 @@ dist/dsteem.js: src/index-browser.ts
 
 dist/dsteem.d.ts: $(SRC_FILES) node_modules
 	dts-generator --name dsteem --project . --out dist/dsteem.d.ts
-	sed -e "s@'dsteem/index'@'dsteem'@g" -i '' dist/dsteem.d.ts
+	sed -e "s$@'dsteem/index'$@'dsteem'$@g" -i '' dist/dsteem.d.ts
 
 dist/%.gz: dist/dsteem.js
 	gzip -9 -f -c $(basename $@) > $(basename $@).gz

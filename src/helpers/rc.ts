@@ -12,7 +12,7 @@ export class RCAPI {
      * Convenience for calling `rc_api`.
      */
     public call(method: string, params?: any) {
-        return this.client.call('rc_api', method, params)
+        return this.client.call('rc_api.', method, params)
     }
 
     /**
@@ -48,7 +48,7 @@ export class RCAPI {
      * Makes a API call and returns the VP mana-data for a specified username
      */
     public async getVPMana(username: string): Promise<Manabar> {
-        const account: Account = (await this.client.call(`condenser_api`, 'get_accounts', [[username]]))[0]
+        const account: Account = (await this.client.call(`condenser_api.`, 'get_accounts', [[username]]))[0]
         return this.calculateVPMana(account)
     }
 

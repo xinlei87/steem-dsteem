@@ -41,6 +41,8 @@ import {Blockchain} from './helpers/blockchain'
 import {BroadcastAPI} from './helpers/broadcast'
 import {DatabaseAPI} from './helpers/database'
 import {RCAPI} from './helpers/rc'
+import {DEMOAPI} from './helpers/demo'
+
 import {copy, retryingFetch, waitForEvent} from './utils'
 
 /**
@@ -51,12 +53,12 @@ export const VERSION = packageVersion
 /**
  * Main steem network chain id.
  */
-export const DEFAULT_CHAIN_ID = Buffer.from('0000000000000000000000000000000000000000000000000000000000000000', 'hex')
+export const DEFAULT_CHAIN_ID = Buffer.from('18dcf0a285365fc58b71f18b3d3fec954aa0c141c44e4e5cb4cf777b9eab274e', 'hex')
 
 /**
  * Main steem network address prefix.
  */
-export const DEFAULT_ADDRESS_PREFIX = 'STM'
+export const DEFAULT_ADDRESS_PREFIX = 'TST'
 
 interface RPCRequest {
     /**
@@ -66,23 +68,23 @@ interface RPCRequest {
     /**
      * RPC method.
      */
-    method: 'call' | 'notice' | 'callback'
+    method: string
     /**
      * Array of parameters to pass to the method.
      */
     jsonrpc: '2.0'
-    params: any[]
+    params: {}
 }
 
 interface RPCCall extends RPCRequest {
-    method: 'call'
+    method: string
     /**
      * 1. API to call, you can pass either the numerical id of the API you get
      *    from calling 'get_api_by_name' or the name directly as a string.
      * 2. Method to call on that API.
      * 3. Arguments to pass to the method.
      */
-    params: [number|string, string, any[]]
+    params: any[]
 }
 
 interface RPCError {
@@ -114,12 +116,12 @@ interface PendingRequest {
 export interface ClientOptions {
     /**
      * Steem chain id. Defaults to main steem network:
-     * `0000000000000000000000000000000000000000000000000000000000000000`
+     * `18dcf0a285365fc58b71f18b3d3fec954aa0c141c44e4e5cb4cf777b9eab274e `
      */
     chainId?: string
     /**
      * Steem address prefix. Defaults to main steem network:
-     * `STM`
+     * `TST`
      */
     addressPrefix?: string
     /**
@@ -188,7 +190,10 @@ export class Client {
      * Broadcast API helper.
      */
     public readonly broadcast: BroadcastAPI
-
+    
+//-----------------------
+    public readonly demo: DEMOAPI
+//--------------------------
     /**
      * Blockchain helper.
      */
@@ -226,6 +231,7 @@ export class Client {
         this.broadcast = new BroadcastAPI(this)
         this.blockchain = new Blockchain(this)
         this.rc = new RCAPI(this)
+        this.demo = new DEMOAPI(this)
     }
 
     /**
@@ -236,13 +242,14 @@ export class Client {
      * @param params  Array of parameters to pass to the method, optional.
      *
      */
-    public async call(api: string, method: string, params: any = []): Promise<any> {
+    public async call(api: string, method,params: any = []): Promise<any> {
         const request: RPCCall = {
             id: '0',
             jsonrpc: '2.0',
-            method: 'call',
-            params: [api, method, params],
+            method: api+method,
+            params: params,
         }
+        console.log(request);
         const body = JSON.stringify(request, (key, value) => {
             // encode Buffers as hex strings instead of an array of bytes
             if (typeof value === 'object' && value.type === 'Buffer') {

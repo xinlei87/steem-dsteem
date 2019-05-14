@@ -3,3 +3,8 @@ lib/
 coverage/
 .nyc_output/
 .testnetrc
+examples/
+webpack.config.js
+dist/
+docs/
+

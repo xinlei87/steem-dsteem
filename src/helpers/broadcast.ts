@@ -55,6 +55,7 @@ import {
     VoteOperation,
 } from './../steem/operation'
 import {SignedTransaction, Transaction, TransactionConfirmation} from './../steem/transaction'
+import { readdirSync } from 'fs';
 
 export interface CreateAccountOptions {
     /**
@@ -276,8 +277,7 @@ export class BroadcastAPI {
      * @param operations List of operations to send.
      * @param key Private key(s) used to sign transaction.
      */
-    public async sendOperations(operations: Operation[],
-                                key: PrivateKey | PrivateKey[]): Promise<TransactionConfirmation> {
+    public async sendOperations(operations: Operation[],key: PrivateKey | PrivateKey[]): Promise<TransactionConfirmation> {
         const props = await this.client.database.getDynamicGlobalProperties()
 
         const ref_block_num = props.head_block_number & 0xFFFF
@@ -298,6 +298,28 @@ export class BroadcastAPI {
 
         return result
     }
+    public async sendDemoOperations(operations:Operation[], key: PrivateKey | PrivateKey[]) : Promise<TransactionConfirmation> {
+        const props = await this.client.database.getDynamicGlobalProperties()
+
+        const ref_block_num = props.head_block_number & 0xFFFF
+        const ref_block_prefix = Buffer.from(props.head_block_id,'hex').readUInt32LE(4)
+        const expiration = new Date(Date.now() + this.expireTime).toISOString().slice(0,-5)
+        const extensions = []
+
+        const tx:Transaction = {
+            expiration,
+            extensions,
+            operations,
+            ref_block_num,
+            ref_block_prefix
+        }
+
+        const result = await this.sendDemo(this.sign(tx,key))
+        assert(result.expired == false, "transaction expired")
+
+        return result
+                        
+    }
 
     /**
      * Sign a transaction with key(s).
@@ -313,11 +335,19 @@ export class BroadcastAPI {
         return this.call('broadcast_transaction_synchronous', [transaction])
     }
 
+    public async sendDemo(transaction: SignedTransaction) : Promise<TransactionConfirmation> {
+        return this.call1('broadcast_transaction_synchronous', [transaction])
+        
+    }
+    public call1(method: string,params?: any[]) {
+        return this.client.call('demo_api.', method, params)
+
+    }
     /**
      * Convenience for calling `condenser_api`.
      */
     public call(method: string, params?: any[]) {
-        return this.client.call('condenser_api', method, params)
+        return this.client.call('condenser_api.', method, params)
     }
 
 }
