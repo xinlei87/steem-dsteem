@@ -243,13 +243,15 @@ export class PrivateKey {
             const options = {data: sha256(Buffer.concat([message, Buffer.alloc(1, ++attempts)]))}
             rv = secp256k1.sign(message, this.key, options)
         } while (!isCanonicalSignature(rv.signature))
-        return new Signature(rv.signature, rv.recovery)
+
+        return  new Signature(rv.signature, rv.recovery)
     }
 
     /**
      * Derive the public key for this private key.
      */
     public createPublic(prefix?: string): PublicKey {
+        
         return new PublicKey(secp256k1.publicKeyCreate(this.key), prefix)
     }
 

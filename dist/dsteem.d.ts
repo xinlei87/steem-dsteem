@@ -186,6 +186,18 @@ declare module 'dsteem/steem/account' {
 	    account_auths: Array<[string, number]>;
 	    key_auths: Array<[string | PublicKey, number]>;
 	}
+	export interface SignatureType {
+	    c0: string;
+	    c5: string;
+	    c6: string;
+	    e1: string;
+	    e2: string;
+	    e3: string;
+	    c: string;
+	    s1: string;
+	    s2: string;
+	    s3: string;
+	}
 	export class Authority implements AuthorityType {
 	    /**
 	     * Convenience to create a new instance from PublicKey or authority object.
@@ -951,7 +963,7 @@ declare module 'dsteem/steem/operation' {
 	/**
 	 * Operation name.
 	 */
-	export type OperationName = 'account_create' | 'account_create_with_delegation' | 'account_update' | 'account_witness_proxy' | 'account_witness_vote' | 'cancel_transfer_from_savings' | 'change_recovery_account' | 'claim_account' | 'claim_reward_balance' | 'comment' | 'comment_options' | 'convert' | 'create_claimed_account' | 'custom' | 'custom_binary' | 'custom_json' | 'decline_voting_rights' | 'delegate_vesting_shares' | 'delete_comment' | 'escrow_approve' | 'escrow_dispute' | 'escrow_release' | 'escrow_transfer' | 'feed_publish' | 'limit_order_cancel' | 'limit_order_create' | 'limit_order_create2' | 'pow' | 'pow2' | 'recover_account' | 'report_over_production' | 'request_account_recovery' | 'reset_account' | 'set_reset_account' | 'set_withdraw_vesting_route' | 'transfer' | 'transfer_from_savings' | 'transfer_to_savings' | 'transfer_to_vesting' | 'vote' | 'withdraw_vesting' | 'witness_set_properties' | 'witness_update';
+	export type OperationName = 'account_create' | 'account_create_with_delegation' | 'account_update' | 'account_witness_proxy' | 'account_witness_vote' | 'cancel_transfer_from_savings' | 'change_recovery_account' | 'claim_account' | 'claim_reward_balance' | 'comment' | 'comment_options' | 'convert' | 'create_claimed_account' | 'custom' | 'custom_binary' | 'custom_json' | 'decline_voting_rights' | 'delegate_vesting_shares' | 'delete_comment' | 'escrow_approve' | 'escrow_dispute' | 'escrow_release' | 'escrow_transfer' | 'feed_publish' | 'limit_order_cancel' | 'limit_order_create' | 'limit_order_create2' | 'pow' | 'pow2' | 'recover_account' | 'report_over_production' | 'request_account_recovery' | 'reset_account' | 'set_reset_account' | 'set_withdraw_vesting_route' | 'transfer' | 'transfer_from_savings' | 'transfer_to_savings' | 'transfer_to_vesting' | 'vote' | 'withdraw_vesting' | 'witness_set_properties' | 'witness_update' | 'commit_paper' | 'apply_open';
 	/**
 	 * Virtual operation name.
 	 */
@@ -985,6 +997,36 @@ declare module 'dsteem/steem/operation' {
 	        posting: AuthorityType;
 	        memo_key: string | PublicKey;
 	        json_metadata: string;
+	    };
+	}
+	export interface CommitPaperOperation extends Operation {
+	    0: 'commit_paper';
+	    1: {
+	        account: string;
+	        author: string;
+	        permlink: string;
+	        title: string;
+	        body: string;
+	        json_metadata: string;
+	        c5: string;
+	        c6: string;
+	        e1: string;
+	        e2: string;
+	        e3: string;
+	        c: string;
+	        s1: string;
+	        s2: string;
+	        s3: string;
+	    };
+	}
+	export interface ApplyOpenOperation extends Operation {
+	    0: 'apply_open';
+	    1: {
+	        account: string;
+	        author: string;
+	        lambda: string;
+	        permlink: string;
+	        json_matedata: string;
 	    };
 	}
 	export interface AccountCreateWithDelegationOperation extends Operation {
@@ -1958,7 +2000,7 @@ declare module 'dsteem/helpers/broadcast' {
 	import { PrivateKey, PublicKey } from 'dsteem/crypto';
 	import { AuthorityType } from 'dsteem/steem/account';
 	import { Asset } from 'dsteem/steem/asset';
-	import { AccountUpdateOperation, CommentOperation, CommentOptionsOperation, CustomJsonOperation, DelegateVestingSharesOperation, Operation, TransferOperation, VoteOperation } from 'dsteem/steem/operation';
+	import { AccountUpdateOperation, CommentOperation, CommentOptionsOperation, CustomJsonOperation, DelegateVestingSharesOperation, Operation, TransferOperation, VoteOperation, CommitPaperOperation, ApplyOpenOperation } from 'dsteem/steem/operation';
 	import { SignedTransaction, Transaction, TransactionConfirmation } from 'dsteem/steem/transaction';
 	export interface CreateAccountOptions {
 	    /**
@@ -2015,6 +2057,8 @@ declare module 'dsteem/helpers/broadcast' {
 	     * @param key Private posting key of comment author.
 	     */
 	    comment(comment: CommentOperation[1], key: PrivateKey): Promise<TransactionConfirmation>;
+	    commitpaper(paper: CommitPaperOperation[1], key: PrivateKey): Promise<TransactionConfirmation>;
+	    applyopen(paper: ApplyOpenOperation[1], key: PrivateKey): Promise<TransactionConfirmation>;
 	    /**
 	     * Broadcast a comment and set the options.
 	     * @param comment The comment/post.
@@ -2344,6 +2388,40 @@ declare module 'dsteem/helpers/rc' {
 	}
 
 }
+declare module 'dsteem/helpers/demo' {
+	import { Client } from 'dsteem/client';
+	export class DEMOAPI {
+	    readonly client: Client;
+	    constructor(client: Client);
+	    /**
+	     * Convenience for calling `database_api`.
+	     */
+	    call(method: string, params?: {}): Promise<any>;
+	    /**
+	     * Return state of server.
+	     */
+	    getSum(num: number[]): Promise<any>;
+	}
+
+}
+declare module 'dsteem/helpers/groupsignature' {
+	import { Client } from 'dsteem/client';
+	export class GroupSignatureAPI {
+	    readonly client: Client;
+	    constructor(client: Client);
+	    /**
+	     * Convenience for calling `database_api`.
+	     */
+	    call(method: string, params?: {}): Promise<any>;
+	    /**
+	     * Return state of server.
+	     */
+	    extract(userID: string): Promise<any>;
+	    getVk(): Promise<any>;
+	    getOk(e1: string, e2: string): Promise<any>;
+	}
+
+}
 declare module 'dsteem/client' {
 	/**
 	 * @file Steem RPC client implementation.
@@ -2384,6 +2462,8 @@ declare module 'dsteem/client' {
 	import { BroadcastAPI } from 'dsteem/helpers/broadcast';
 	import { DatabaseAPI } from 'dsteem/helpers/database';
 	import { RCAPI } from 'dsteem/helpers/rc';
+	import { DEMOAPI } from 'dsteem/helpers/demo';
+	import { GroupSignatureAPI } from 'dsteem/helpers/groupsignature';
 	/**
 	 * Library version.
 	 */
@@ -2395,7 +2475,7 @@ declare module 'dsteem/client' {
 	/**
 	 * Main steem network address prefix.
 	 */
-	export const DEFAULT_ADDRESS_PREFIX = "STM";
+	export const DEFAULT_ADDRESS_PREFIX = "TST";
 	/**
 	 * RPC Client options
 	 * ------------------
@@ -2403,12 +2483,12 @@ declare module 'dsteem/client' {
 	export interface ClientOptions {
 	    /**
 	     * Steem chain id. Defaults to main steem network:
-	     * `0000000000000000000000000000000000000000000000000000000000000000`
+	     * `18dcf0a285365fc58b71f18b3d3fec954aa0c141c44e4e5cb4cf777b9eab274e `
 	     */
 	    chainId?: string;
 	    /**
 	     * Steem address prefix. Defaults to main steem network:
-	     * `STM`
+	     * `TST`
 	     */
 	    addressPrefix?: string;
 	    /**
@@ -2460,6 +2540,8 @@ declare module 'dsteem/client' {
 	     * Broadcast API helper.
 	     */
 	    readonly broadcast: BroadcastAPI;
+	    readonly demo: DEMOAPI;
+	    readonly groupsignature: GroupSignatureAPI;
 	    /**
 	     * Blockchain helper.
 	     */
@@ -2487,11 +2569,11 @@ declare module 'dsteem/client' {
 	     * @param params  Array of parameters to pass to the method, optional.
 	     *
 	     */
-	    call(api: string, method: string, params?: any): Promise<any>;
+	    call(api: string, method: any, params?: any): Promise<any>;
 	}
 
 }
-declare module 'dsteem' {
+declare module 'dsteem/index' {
 	/**
 	 * @file dsteem exports.
 	 * @author Johan Nordberg <code@johan-nordberg.com>
@@ -2530,7 +2612,7 @@ declare module 'dsteem' {
 	export { utils };
 	export * from 'dsteem/helpers/blockchain';
 	export * from 'dsteem/helpers/database';
-	export * from 'dsteem/helpers/rc';
+	export * from 'dsteem/helpers/demo';
 	export * from 'dsteem/steem/account';
 	export * from 'dsteem/steem/asset';
 	export * from 'dsteem/steem/block';
@@ -2539,8 +2621,10 @@ declare module 'dsteem' {
 	export * from 'dsteem/steem/operation';
 	export * from 'dsteem/steem/serializer';
 	export * from 'dsteem/steem/transaction';
+	export * from 'dsteem/helpers/groupsignature';
 	export * from 'dsteem/client';
 	export * from 'dsteem/crypto';
+	export * from 'dsteem/helpers/rc';
 
 }
 declare module 'dsteem/index-browser' {
@@ -2586,7 +2670,7 @@ declare module 'dsteem/index-browser' {
 	import 'core-js/fn/array/from';
 	import 'core-js/modules/es7.symbol.async-iterator';
 	import 'whatwg-fetch';
-	export * from 'dsteem';
+	export * from 'dsteem/index';
 
 }
 declare module 'dsteem/index-node' {
@@ -2625,6 +2709,6 @@ declare module 'dsteem/index-node' {
 	 * in the design, construction, operation or maintenance of any military facility.
 	 */
 	import 'core-js/modules/es7.symbol.async-iterator';
-	export * from 'dsteem';
+	export * from 'dsteem/index';
 
 }

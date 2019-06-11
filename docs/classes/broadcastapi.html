@@ -97,6 +97,7 @@
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="broadcastapi.html#call" class="tsd-kind-icon">call</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="broadcastapi.html#comment" class="tsd-kind-icon">comment</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="broadcastapi.html#commentwithoptions" class="tsd-kind-icon">comment<wbr>With<wbr>Options</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class"><a href="broadcastapi.html#commitpaper" class="tsd-kind-icon">commitpaper</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="broadcastapi.html#createtestaccount" class="tsd-kind-icon">create<wbr>Test<wbr>Account</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="broadcastapi.html#delegatevestingshares" class="tsd-kind-icon">delegate<wbr>Vesting<wbr>Shares</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class"><a href="broadcastapi.html#json" class="tsd-kind-icon">json</a></li>
@@ -123,7 +124,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jnordberg/dsteem/blob/master/src/helpers/broadcast.ts#L105">helpers/broadcast.ts:105</a></li>
+									<li>Defined in <a href="https://github.com/xinlei87/steem-dsteem/blob/master/src/helpers/broadcast.ts#L107">helpers/broadcast.ts:107</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -145,7 +146,7 @@
 					<div class="tsd-signature tsd-kind-icon">client<span class="tsd-signature-symbol">:</span> <a href="client.html" class="tsd-signature-type">Client</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jnordberg/dsteem/blob/master/src/helpers/broadcast.ts#L107">helpers/broadcast.ts:107</a></li>
+							<li>Defined in <a href="https://github.com/xinlei87/steem-dsteem/blob/master/src/helpers/broadcast.ts#L109">helpers/broadcast.ts:109</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -155,7 +156,7 @@
 					<div class="tsd-signature tsd-kind-icon">expire<wbr>Time<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> =&nbsp;60 * 1000</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/jnordberg/dsteem/blob/master/src/helpers/broadcast.ts#L105">helpers/broadcast.ts:105</a></li>
+							<li>Defined in <a href="https://github.com/xinlei87/steem-dsteem/blob/master/src/helpers/broadcast.ts#L107">helpers/broadcast.ts:107</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -178,7 +179,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jnordberg/dsteem/blob/master/src/helpers/broadcast.ts#L319">helpers/broadcast.ts:319</a></li>
+									<li>Defined in <a href="https://github.com/xinlei87/steem-dsteem/blob/master/src/helpers/broadcast.ts#L323">helpers/broadcast.ts:323</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -209,7 +210,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jnordberg/dsteem/blob/master/src/helpers/broadcast.ts#L114">helpers/broadcast.ts:114</a></li>
+									<li>Defined in <a href="https://github.com/xinlei87/steem-dsteem/blob/master/src/helpers/broadcast.ts#L116">helpers/broadcast.ts:116</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -269,7 +270,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jnordberg/dsteem/blob/master/src/helpers/broadcast.ts#L125">helpers/broadcast.ts:125</a></li>
+									<li>Defined in <a href="https://github.com/xinlei87/steem-dsteem/blob/master/src/helpers/broadcast.ts#L130">helpers/broadcast.ts:130</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -369,6 +370,49 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
+					<a name="commitpaper" class="tsd-anchor"></a>
+					<h3>commitpaper</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+						<li class="tsd-signature tsd-kind-icon">commitpaper<span class="tsd-signature-symbol">(</span>paper<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span>, key<span class="tsd-signature-symbol">: </span><a href="privatekey.html" class="tsd-signature-type">PrivateKey</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/transactionconfirmation.html" class="tsd-signature-type">TransactionConfirmation</a><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/xinlei87/steem-dsteem/blob/master/src/helpers/broadcast.ts#L120">helpers/broadcast.ts:120</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>paper: <span class="tsd-signature-type">object</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter">
+											<h5>author<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5>body<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5>c0<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5>permlink<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+										</li>
+										<li class="tsd-parameter">
+											<h5>title<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5>
+										</li>
+									</ul>
+								</li>
+								<li>
+									<h5>key: <a href="privatekey.html" class="tsd-signature-type">PrivateKey</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/transactionconfirmation.html" class="tsd-signature-type">TransactionConfirmation</a><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class">
 					<a name="createtestaccount" class="tsd-anchor"></a>
 					<h3>create<wbr>Test<wbr>Account</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -378,7 +422,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jnordberg/dsteem/blob/master/src/helpers/broadcast.ts#L170">helpers/broadcast.ts:170</a></li>
+									<li>Defined in <a href="https://github.com/xinlei87/steem-dsteem/blob/master/src/helpers/broadcast.ts#L175">helpers/broadcast.ts:175</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -415,7 +459,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jnordberg/dsteem/blob/master/src/helpers/broadcast.ts#L269">helpers/broadcast.ts:269</a></li>
+									<li>Defined in <a href="https://github.com/xinlei87/steem-dsteem/blob/master/src/helpers/broadcast.ts#L274">helpers/broadcast.ts:274</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -483,7 +527,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jnordberg/dsteem/blob/master/src/helpers/broadcast.ts#L160">helpers/broadcast.ts:160</a></li>
+									<li>Defined in <a href="https://github.com/xinlei87/steem-dsteem/blob/master/src/helpers/broadcast.ts#L165">helpers/broadcast.ts:165</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -544,7 +588,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jnordberg/dsteem/blob/master/src/helpers/broadcast.ts#L312">helpers/broadcast.ts:312</a></li>
+									<li>Defined in <a href="https://github.com/xinlei87/steem-dsteem/blob/master/src/helpers/broadcast.ts#L315">helpers/broadcast.ts:315</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -572,7 +616,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jnordberg/dsteem/blob/master/src/helpers/broadcast.ts#L279">helpers/broadcast.ts:279</a></li>
+									<li>Defined in <a href="https://github.com/xinlei87/steem-dsteem/blob/master/src/helpers/broadcast.ts#L284">helpers/broadcast.ts:284</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -609,7 +653,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jnordberg/dsteem/blob/master/src/helpers/broadcast.ts#L305">helpers/broadcast.ts:305</a></li>
+									<li>Defined in <a href="https://github.com/xinlei87/steem-dsteem/blob/master/src/helpers/broadcast.ts#L308">helpers/broadcast.ts:308</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -640,7 +684,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jnordberg/dsteem/blob/master/src/helpers/broadcast.ts#L150">helpers/broadcast.ts:150</a></li>
+									<li>Defined in <a href="https://github.com/xinlei87/steem-dsteem/blob/master/src/helpers/broadcast.ts#L155">helpers/broadcast.ts:155</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -711,7 +755,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jnordberg/dsteem/blob/master/src/helpers/broadcast.ts#L252">helpers/broadcast.ts:252</a></li>
+									<li>Defined in <a href="https://github.com/xinlei87/steem-dsteem/blob/master/src/helpers/broadcast.ts#L257">helpers/broadcast.ts:257</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -769,7 +813,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/jnordberg/dsteem/blob/master/src/helpers/broadcast.ts#L140">helpers/broadcast.ts:140</a></li>
+									<li>Defined in <a href="https://github.com/xinlei87/steem-dsteem/blob/master/src/helpers/broadcast.ts#L145">helpers/broadcast.ts:145</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -849,6 +893,9 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="broadcastapi.html#commentwithoptions" class="tsd-kind-icon">comment<wbr>With<wbr>Options</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class">
+								<a href="broadcastapi.html#commitpaper" class="tsd-kind-icon">commitpaper</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class">
 								<a href="broadcastapi.html#createtestaccount" class="tsd-kind-icon">create<wbr>Test<wbr>Account</a>

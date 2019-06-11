@@ -1,54 +1,202 @@
-const dsteem = require('dsteem')
-
-// bot is configured with enviroment variables
-
-// the username of the bot
-const BOT_USER = process.env['BOT_USER'] || die('BOT_USER missing')
-// the posting key of the bot
-const POSTING_KEY = process.env['POSTING_KEY'] || die('POSTING_KEY missing')
-// the user we want to vote the same as
-const FOLLOW_USER = process.env['FOLLOW_USER'] || die('FOLLOW_USER missing')
-// and the vote weight to use, 10000 = 100%
-const VOTE_WEIGHT = process.env['VOTE_WEIGHT'] ? parseInt(process.env['VOTE_WEIGHT']) : 10000
-
+const dsteem = require('../../lib')
+opts = {}
+opts.addressPrefix = 'TST'
+opts.chainId= '18dcf0a285365fc58b71f18b3d3fec954aa0c141c44e4e5cb4cf777b9eab274e'
 // setup the dsteem client, you can use other nodes, for example gtg's public node at https://gtg.steem.house:8090
-const client = new dsteem.Client('https://api.steemit.com')
+const client = new dsteem.Client('http://127.0.0.1:8091',opts)
 
-// deserialize the posting key (in wif format, same format as you find on the steemit.com interface)
-const key = dsteem.PrivateKey.from(POSTING_KEY)
+const username = "initminer2"
+const password = "5JHKRW4d7BTU1V1CXDQAPmDfBBFr6XqQoDDUpmPP1JW38s5NjeW" 
+const privatekey = dsteem.PrivateKey.fromString("5JHKRW4d7BTU1V1CXDQAPmDfBBFr6XqQoDDUpmPP1JW38s5NjeW")
 
-// create a new readable stream with all operations, we use the 'latest' mode since
-// we don't care about reversed block that much for a simple vote bot
-// and this will make it react faster to the votes of it's master
-const stream = client.blockchain.getOperationsStream({mode: dsteem.BlockchainMode.Latest})
+const ownerKey = dsteem.PrivateKey.fromLogin(username, password, 'owner');
+const activeKey = dsteem.PrivateKey.fromLogin(username, password, 'active');
+const postingKey = dsteem.PrivateKey.fromLogin(username, password, 'posting');
+const memoKey = dsteem.PrivateKey.fromLogin(
+    username,
+    password,
+    'memo'
+).createPublic(opts.addressPrefix);
 
-console.log(`Following ${ FOLLOW_USER } with ${ VOTE_WEIGHT / 100 }% vote weight`)
+const ownerAuth = {
+    weight_threshold: 1,
+    account_auths: [],
+    key_auths: [[ownerKey.createPublic(opts.addressPrefix), 1]],
+};
+const activeAuth = {
+    weight_threshold: 1,
+    account_auths: [],
+    key_auths: [[activeKey.createPublic(opts.addressPrefix), 1]],
+};
+const postingAuth = {
+    weight_threshold: 1,
+    account_auths: [],
+    key_auths: [[postingKey.createPublic(opts.addressPrefix), 1]],
+};
 
-// the stream will emit one data event for every operatio that happens on the steemit blockchain
-stream.on('data', (operation) => {
 
-    // we only care about vote operations made by the user we follow
-    if (operation.op[0] == 'vote') {
-        let vote = operation.op[1]
-        if (vote.voter === FOLLOW_USER) {
-            console.log(`${ vote.voter } voted, following...`)
+const op = [
+    'account_create',
+    {
+        fee: "0.000 TESTS",
+        creator: "initminer2",
+        new_account_name: "aliceali",
+        owner: ownerAuth,
+        active: activeAuth,
+        posting: postingAuth,
+        memo_key: memoKey,
+        json_metadata: '',
+    },
+];
 
-            // change the voter to the bot user and set the weight
-            vote.voter = BOT_USER
-            if (vote.weight > 0) {
-                vote.weight = VOTE_WEIGHT
-            } else {
-                vote.weight = -VOTE_WEIGHT // follow flags as well
+// client.broadcast.sendOperations([op], privatekey).then(
+//     function(result) {
+//         console.log("account_creat is",result)
+//     },
+//     function(error) {
+//         console.error("acc err",error);
+//     }
+// );
+
+
+
+
+
+const tags = "computer";
+const taglist = tags.split(' ');
+//make simple json metadata including only tags
+const json_metadata = JSON.stringify({ tags: taglist });
+// const privatekey = dsteem.PrivateKey.fromString("5JHKRW4d7BTU1V1CXDQAPmDfBBFr6XqQoDDUpmPP1JW38s5NjeW")
+// const permlink = Math.random().toString(36).substring(2)
+
+// client.broadcast.comment(
+//     {
+//         author :"initminer2",
+//         body:"this is body",
+//         json_metadata:json_metadata,
+//         parent_permlink:taglist[0],
+//         parent_author:"",
+//         permlink:permlink,
+//         title:"title"
+//     },privatekey
+// ).then(function(result){
+//     console.log(result)
+// },function(err){
+//     console.log(err)
+// })
+client.groupsignature.getVk().then(function(result){
+    console.log("vk is",result)
+    client.groupsignature.extract("user").then(function(data){
+        console.log("usk is",data)
+        c0 ="[3517434057277061539846072372075022204977624986792606476307043936327410236196826357306496153660491509282139665064032265877047046071242456139074055873374344,1355946181164265935749028524712263970049692017083622013348678136712288478674116087100067557761717213064185039952366170321632493410305629372299232859183313]"
+        c5 ="[5923660050825148764093299972054081434341329473577981718542334036508567204604183072933943815903766774761381238434598102368455468359544244498223281938000227,2431528721946695670692689397774974990205549427519113822802721901058878898665536288657913445119393386090783886746395142884270302742744061027460012219381560]"
+        c6 = "[3700512331859008261121596088735792438890190174362099214365485361113921150612260116834717016218273286948393196999093863599398435121516142381911432498523537,2455807463752372665011795814108686990524034778200934145525296495355513873190042274415065976438699308325682785822843642330253669942159737972860057460797389]"
+        e1 = "[5695565644012530475585747703774192494446685668169695710295397364170459051534925010489525965301417766724744279270358004032092844401826965674950340897441084,91785531708960987772733447102063396028759206981654527785348530226864806239178835057964181533130937870466668030499250345429032059125142787559250302755270]"
+        e2 = "[6228629091218691066640011969720104646634760996335062988522621583035755448638718178662935311416552559394524728872841871437464601600249255419285378263729861,620558418495912611504076247982558731494953325811191364101964909125084221920023744456275314732306080458596609382434278411323831188912252132396030697871365]"
+        e3 = "[1081308449101813057881220167288069597620506810760856745000356392588532372513617133351502291264948957821295424819698023932685382971763227185652022197503774,3531433819015135984993046196169783198198125852511733310292276301940723015086638821944386611979788091313221445330099591454169751507150350098668298902442543]"
+        c = "520771376612913128661126275823126544823180866865"
+        s1 = "702018642119326026889871019457548338163525771278"
+        s2 = "727370940036080318606905321017354662113052744256"
+        s3 = "642837260407770061432184243864170352441637640791"
+        const privatekey = dsteem.PrivateKey.fromString("5JHKRW4d7BTU1V1CXDQAPmDfBBFr6XqQoDDUpmPP1JW38s5NjeW")
+        const account = "initminer2"
+        const title = "title"
+        const body = "this is a paper"
+        permlink = Math.random().toString(36).substring(2)
+        console.log("permlink:", permlink)
+        const op = 
+            {
+
+                account:account,
+                author:"nya",
+                permlink:permlink,
+                title:title,
+                body:body,
+                json_metadata:json_metadata,
+                // signature:{
+                c0:c0,
+                c5:c5,
+                c6:c6,
+                e1:e1,
+                e2:e2,
+                e3:e3,
+                c:c,
+                s1:s1,
+                s2:s2,
+                s3:s3
+                // }
+                
             }
 
-            // finally broadcast the vote to the network
-            client.broadcast.vote(vote, key).then(() => {
-                console.log(`Voted for https://steemit.com/@${ vote.author }/${ vote.permlink }`)
-            }).catch((error) => {
-                console.warn('Vote failed', error)
-            })
-        }
-    }
-})
+            const op2 ={
+                author :"initminer2",
+                body:"this is body[3700512331859008261121596088735792438890190174362099214365485361113921150612260116834717016218273286948393196999093863599398435121516142381911432498523537,2455807463752372665011795814108686990524034778200934145525296495355513873190042274415065976438699308325682785822843642330253669942159737972860057460797389][3700512331859008261121596088735792438890190174362099214365485361113921150612260116834717016218273286948393196999093863599398435121516142381911432498523537,2455807463752372665011795814108686990524034778200934145525296495355513873190042274415065976438699308325682785822843642330253669942159737972860057460797389][3700512331859008261121596088735792438890190174362099214365485361113921150612260116834717016218273286948393196999093863599398435121516142381911432498523537,2455807463752372665011795814108686990524034778200934145525296495355513873190042274415065976438699308325682785822843642330253669942159737972860057460797389][3700512331859008261121596088735792438890190174362099214365485361113921150612260116834717016218273286948393196999093863599398435121516142381911432498523537,2455807463752372665011795814108686990524034778200934145525296495355513873190042274415065976438699308325682785822843642330253669942159737972860057460797389][3700512331859008261121596088735792438890190174362099214365485361113921150612260116834717016218273286948393196999093863599398435121516142381911432498523537,2455807463752372665011795814108686990524034778200934145525296495355513873190042274415065976438699308325682785822843642330253669942159737972860057460797389][3700512331859008261121596088735792438890190174362099214365485361113921150612260116834717016218273286948393196999093863599398435121516142381911432498523537,2455807463752372665011795814108686990524034778200934145525296495355513873190042274415065976438699308325682785822843642330253669942159737972860057460797389][3700512331859008261121596088735792438890190174362099214365485361113921150612260116834717016218273286948393196999093863599398435121516142381911432498523537,2455807463752372665011795814108686990524034778200934145525296495355513873190042274415065976438699308325682785822843642330253669942159737972860057460797389][3700512331859008261121596088735792438890190174362099214365485361113921150612260116834717016218273286948393196999093863599398435121516142381911432498523537,2455807463752372665011795814108686990524034778200934145525296495355513873190042274415065976438699308325682785822843642330253669942159737972860057460797389][3700512331859008261121596088735792438890190174362099214365485361113921150612260116834717016218273286948393196999093863599398435121516142381911432498523537,2455807463752372665011795814108686990524034778200934145525296495355513873190042274415065976438699308325682785822843642330253669942159737972860057460797389][3700512331859008261121596088735792438890190174362099214365485361113921150612260116834717016218273286948393196999093863599398435121516142381911432498523537,2455807463752372665011795814108686990524034778200934145525296495355513873190042274415065976438699308325682785822843642330253669942159737972860057460797389]",
+                json_metadata:json_metadata,
+                parent_permlink:taglist[0],
+                parent_author:"",
+                permlink:permlink,
+                title:"title"
+            }
+        client.database.getDynamicGlobalProperties().then(
+            function(props){
+                const ref_block_num = props.head_block_number & 0xFFFF
+                const ref_block_prefix = Buffer.from(props.head_block_id, 'hex').readUInt32LE(4)
+                expireTime = 60 * 1000
 
-function die(msg) { process.stderr.write(msg+'\n'); process.exit(1) }
+                tx = {
+                    ref_block_num: ref_block_num,
+                    ref_block_prefix: ref_block_prefix,
+                    expiration: new Date(Date.now() + expireTime).toISOString().slice(0, -5),
+                    operations: [['commit_paper',op]],
+                    extensions: [],
+                }
+                client.broadcast.commitpaper(op,privatekey).then(function(result){
+                    console.log("commit paper result is", result)
+                    const op3 = {
+                        account:"initminer2",
+                        author:"user",
+                        lambda:"[6763401476183535494340801038649954676490052535220137965131249630346366340710169979310661460987637984610895017730569720722672708300813491156478850380435620, 2846199266028353508783943541955500161895651088287245371711778249379750478976756559356087624425282219020094541723583412390779192007932548019778716825712445]",
+                        permlink:permlink,
+                        json_metadata:json_metadata
+                    }
+                    client.broadcast.applyopen(op3,privatekey).then(function(re){
+                        console.log("apply_open:",re)
+                    },function(err){
+                        console.log("apply_open err",err)
+                    })
+                },function(err){
+                    console.log("commit err is", err)
+                })
+            }
+        )
+        // client.database.getDynamicGlobalProperties().then(
+        //     function(props){
+        //         const ref_block_num = props.head_block_number & 0xFFFF
+        //         const ref_block_prefix = Buffer.from(props.head_block_id, 'hex').readUInt32LE(4)
+        //         expireTime = 60 * 1000
+
+        //         tx = {
+        //             ref_block_num: ref_block_num,
+        //             ref_block_prefix: ref_block_prefix,
+        //             expiration: new Date(Date.now() + expireTime).toISOString().slice(0, -5),
+        //             operations: [['comment',op2]],
+        //             extensions: [],
+        //         }
+        //         stx= client.broadcast.sign(tx,privatekey)
+        //         console.log("coment tx is",stx)
+        //         client.database.verifyAuthority(stx).then(function(re){
+        //             console.log("comment result is ",re)
+        //         },function(err){
+        //             console.log(" comment err ",err)
+        //         })
+        //     }
+        // )
+
+
+    // },function(err){
+    //     console.log(err)
+    // })
+// },function(err){
+    // console.log(err)
+// })
+        })})

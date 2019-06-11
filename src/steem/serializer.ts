@@ -221,7 +221,45 @@ const OperationDataSerializer = (operationId: number, definitions: Array<[string
 
 const OperationSerializers: {[name: string]: Serializer} = {}
 
-OperationSerializers.account_create = OperationDataSerializer(9, [
+OperationSerializers.commit_paper = OperationDataSerializer(0,[
+    ['account',StringSerializer],
+    ['author',StringSerializer],
+    ['permlink',StringSerializer],
+    ['title',StringSerializer],
+
+    ['body',StringSerializer],
+    ['json_metadata',StringSerializer],
+    
+    // ['signature',ObjectSerializer([['c0',StringSerializer],['c5',StringSerializer],['c6',StringSerializer],
+    //                                 ['e1',StringSerializer],['e2',StringSerializer],['e3',StringSerializer],
+    //                                 ['c',StringSerializer],['s1',StringSerializer],['s2',StringSerializer],['s3',StringSerializer]])],
+    
+    // ['extensions', ArraySerializer(VoidSerializer)],
+    
+    ['c0',StringSerializer],
+    ['c5',StringSerializer],
+    ['c6',StringSerializer],
+    ['e1',StringSerializer],
+    ['e2',StringSerializer],
+    ['e3',StringSerializer],
+    ['c',StringSerializer],
+    ['s1',StringSerializer],
+    ['s2',StringSerializer],
+    ['s3',StringSerializer],
+
+])
+
+OperationSerializers.apply_open = OperationDataSerializer(1,[
+    ['account',StringSerializer],
+    ['author',StringSerializer],
+    ['lambda',StringSerializer],
+    ['permlink',StringSerializer],
+    ['json_metadata',StringSerializer],
+    // ['extensions', ArraySerializer(VoidSerializer)],
+    
+
+])
+OperationSerializers.account_create = OperationDataSerializer(10, [
     ['fee', AssetSerializer],
     ['creator', StringSerializer],
     ['new_account_name', StringSerializer],
@@ -289,7 +327,7 @@ OperationSerializers.claim_reward_balance = OperationDataSerializer(39, [
     ['reward_vests', AssetSerializer],
 ])
 
-OperationSerializers.comment = OperationDataSerializer(1, [
+OperationSerializers.comment = OperationDataSerializer(2, [
     ['parent_author', StringSerializer],
     ['parent_permlink', StringSerializer],
     ['author', StringSerializer],

@@ -33,12 +33,14 @@
  * in the design, construction, operation or maintenance of any military facility.
  */
 
-import {PublicKey} from './../crypto'
+import {PublicKey, Signature} from './../crypto'
 import {AuthorityType} from './account'
 import {Asset, Price, PriceType} from './asset'
 import {SignedBlockHeader} from './block'
 import {BeneficiaryRoute} from './comment'
 import {ChainProperties, HexBuffer} from './misc'
+import {SignatureType} from './account'
+import { AnyMxRecord } from 'dns';
 
 /**
  * Operation name.
@@ -87,7 +89,10 @@ export type OperationName = // <id>
     | 'withdraw_vesting' // 4
     | 'witness_set_properties' // 42
     | 'witness_update' // 11
-
+//------------------------------------------
+    | 'commit_paper'
+    | 'apply_open'
+//---------------------------------------
 /**
  * Virtual operation name.
  */
@@ -138,7 +143,43 @@ export interface AccountCreateOperation extends Operation {
         json_metadata: string
     }
 }
+//-------------------------------------------------------------------
+export interface CommitPaperOperation extends Operation {
+    0:'commit_paper'
+    1:{
+        account: string //account_name_type
+        author : string //string
+        permlink : string //string
+        title: string //string
+        body: string //string
+        json_metadata: string
 
+        // signature : SignatureType
+        c5:string //string
+        c6:string //string
+        e1:string //string
+        e2:string //string
+        e3:string //string
+        c:string //string
+        s1:string //string
+        s2:string //string
+        s3:string //string
+        // extensions: any[]
+    }
+}
+export interface ApplyOpenOperation extends Operation{
+    0:'apply_open'
+    1:{
+        account: string
+        author: string
+        lambda: string
+        permlink: string
+        json_matedata:string
+        // extensions: any[]
+        
+    }
+}
+//----------------------------------------------------------------------
 export interface AccountCreateWithDelegationOperation extends Operation {
     0: 'account_create_with_delegation'
     1: {

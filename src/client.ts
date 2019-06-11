@@ -42,7 +42,7 @@ import {BroadcastAPI} from './helpers/broadcast'
 import {DatabaseAPI} from './helpers/database'
 import {RCAPI} from './helpers/rc'
 import {DEMOAPI} from './helpers/demo'
-
+import {GroupSignatureAPI} from './helpers/groupsignature'
 import {copy, retryingFetch, waitForEvent} from './utils'
 
 /**
@@ -161,9 +161,9 @@ export class Client {
             opts.agent = options.agent
         }
 
-        opts.addressPrefix = 'STX'
-        opts.chainId = '79276aea5d4877d9a25892eaa01b0adf019d3e5cb12a97478df3298ccdd01673'
-        return new Client('https://testnet.steem.vc', opts)
+        opts.addressPrefix = 'TST'
+        opts.chainId = '18dcf0a285365fc58b71f18b3d3fec954aa0c141c44e4e5cb4cf777b9eab274e'
+        return new Client('http://127.0.0.1:8091', opts)
     }
 
     /**
@@ -193,6 +193,9 @@ export class Client {
     
 //-----------------------
     public readonly demo: DEMOAPI
+
+
+    public readonly groupsignature:GroupSignatureAPI
 //--------------------------
     /**
      * Blockchain helper.
@@ -232,6 +235,7 @@ export class Client {
         this.blockchain = new Blockchain(this)
         this.rc = new RCAPI(this)
         this.demo = new DEMOAPI(this)
+        this.groupsignature = new GroupSignatureAPI(this)
     }
 
     /**

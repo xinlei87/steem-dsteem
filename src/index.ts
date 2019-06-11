@@ -47,7 +47,7 @@ export * from './steem/misc'
 export * from './steem/operation'
 export * from './steem/serializer'
 export * from './steem/transaction'
-
+export * from './helpers/groupsignature'
 export * from './client'
 export * from './crypto'
 export * from './helpers/rc'

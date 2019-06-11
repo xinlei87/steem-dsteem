@@ -43,7 +43,18 @@ export interface AuthorityType {
     account_auths: Array<[string, number]> // flat_map< account_name_type, uint16_t >
     key_auths: Array<[string | PublicKey, number]>// flat_map< public_key_type, uint16_t >
 }
-
+export interface SignatureType {
+    c0: string
+    c5: string
+    c6: string
+    e1: string
+    e2: string
+    e3: string
+    c: string
+    s1: string
+    s2: string
+    s3: string
+}
 export class Authority implements AuthorityType {
 
     /**
